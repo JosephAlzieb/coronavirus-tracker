@@ -9,14 +9,23 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.ArrayList;
 import java.util.List;
+import javax.annotation.PostConstruct;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVRecord;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 @Service
 public class CoronaVirusDataService {
 
   private static final String CORON_VIRUS_DATA_URL = "https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_confirmed_global.csv";
+
+  // this Annotation run the methode immediately/directly after the main-method is executed
+  //@PostConstruct
+
+  // this Annotation run the methode every day. show documents.. (sec minute hour day month)
+  // @Scheduled methods must not take any arguments or return anything => comment out for now
+  //@Scheduled(cron = "* * 1 * * *")
 
   public List<LocationStats> fetchVirusData() throws IOException, InterruptedException {
     ArrayList<LocationStats> allStats = new ArrayList();
@@ -43,6 +52,7 @@ public class CoronaVirusDataService {
       allStats.add(locationStat);
     }
 
+    System.out.println(allStats);
     return allStats;
   }
 
