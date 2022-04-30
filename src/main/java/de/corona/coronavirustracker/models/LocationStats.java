@@ -25,6 +25,14 @@ public class LocationStats {
     this.diffFromPrevDay = diffFromPrevDay;
   }
 
+  public String getState() {
+    return state;
+  }
+
+  public String getCountry() {
+    return country;
+  }
+
   public int getLatestTotalCases() {
     return latestTotalCases;
   }
