@@ -8,6 +8,7 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.ArrayList;
+import java.util.List;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVRecord;
 import org.springframework.stereotype.Service;
@@ -17,8 +18,9 @@ public class CoronaVirusDataService {
 
   private static final String CORON_VIRUS_DATA_URL = "https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_confirmed_global.csv";
 
-  public ArrayList fetchVirusData() throws IOException, InterruptedException {
-    ArrayList allStats = new ArrayList();
+  public List<LocationStats> fetchVirusData() throws IOException, InterruptedException {
+    ArrayList<LocationStats> allStats = new ArrayList();
+
     HttpClient client = HttpClient.newHttpClient();
 
     HttpRequest request = HttpRequest.newBuilder()
@@ -42,5 +44,13 @@ public class CoronaVirusDataService {
     }
 
     return allStats;
+  }
+
+  public int getTotalReportedCases() throws IOException, InterruptedException {
+    return fetchVirusData().stream().mapToInt(stat -> stat.getLatestTotalCases()).sum();
+  }
+
+  public int totalNewCases() throws IOException, InterruptedException {
+    return fetchVirusData().stream().mapToInt(stat -> stat.getDiffFromPrevDay()).sum();
   }
 }
